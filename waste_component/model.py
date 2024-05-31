@@ -28,5 +28,5 @@ class Waste_ComponentPydantic(BaseModel):
 
 
 
-Base.metadata.create_all()
+Base.metadata.create_all(bind=engine)
 

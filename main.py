@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from waste_component.router import router as waste_route
+from student.router import router as student_route
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+app= FastAPI()
+
+app.include_router(waste_route,prefix="/api")
+app.include_router(student_route,prefix="/api")
+
