@@ -23,6 +23,10 @@ def get_db():
     finally:
         db.close()
 
+@router.get("/students/", response_model = list[StudentPydantic]) #referans aldığımız modelden gelen her veri listenin içinde tutuluyor
+def read_students(skip: int = 0, limit: int = 10, db: SessionLocal = Depends(get_db)): #skip ve limit veri tabanından alınacak kişilerin sayısını ve aralığını bildirir arada kaç kişi olacağını bildirir
+    students = db.query(Student).offset(skip).limit(limit).all() #students değişkenine skip ve limit değerleri sınıflandırılarak atanır(aall ile hepsi demek)
+    return students #filtrelediğimiz öğrencileri atadığımız değişkeni geri döndürür.
 
 @router.get ("/student/{student_id}",response_model =StudentPydantic)
 async def get_student(student_id:int,db:Session =Depends(get_db)):
