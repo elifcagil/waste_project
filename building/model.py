@@ -16,11 +16,14 @@ class Building(Base):
     building_type=Column(String(100),nullable=False)
 
 
+    waste = relationship('Waste', back_populates='build')
+
+
 class BuildingEnum(str, Enum):
-    yerlesim_yeri = "yerleşim yeri"
-    akademik_bina = "akademik bina"
-    idari_bina = "idari bina"
-    kafeterya = "kafeterya"
+    yerlesim_yeri = "Yerleşim yeri"
+    akademik_bina = "Akademik bina"
+    idari_bina = "İdari bina"
+    kafeterya = "Kafeterya"
 
 class BuildingPydantic(BaseModel):
     building_name:str

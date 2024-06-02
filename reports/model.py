@@ -12,7 +12,7 @@ class Reports(Base):
 
     reports_id=Column(Integer ,primary_key=True,autoincrement=True)
     waste_id=Column(Integer,ForeignKey('waste.waste_id'),nullable=False)
-    build_id=Column(Integer,nullable=False)
+    build_id=Column(Integer,nullable=False) #building_type tutmalısın
 
     waste_3=relationship("Waste",back_populates="reports")
 

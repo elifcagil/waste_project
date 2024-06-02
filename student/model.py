@@ -19,6 +19,8 @@ class Student(Base):
     student_last_name =Column(String(10),nullable=False)
 
 
+    waste_1 = relationship('Waste', back_populates='student')
+
 
 
 class StudentPydantic(BaseModel):
