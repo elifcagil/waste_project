@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine,Column,Integer,String
 from sqlalchemy.orm import declarative_base ,relationship
 from pydantic import BaseModel
+from enum import Enum
 
 
 engine = create_engine ('postgresql://postgres:123456@localhost/postgres')
@@ -14,12 +15,16 @@ class Building(Base):
     building_name=Column(String(100),nullable=False)
     building_type=Column(String(100),nullable=False)
 
-    waste=relationship('Waste',back_populates='build')
+
+class BuildingEnum(str, Enum):
+    yerlesim_yeri = "yerleşim yeri"
+    akademik_bina = "akademik bina"
+    idari_bina = "idari bina"
+    kafeterya = "kafeterya"
 
 class BuildingPydantic(BaseModel):
-    building_id:int
     building_name:str
-    building_type:str
+    building_type:BuildingEnum
 
     class Config:
         from_attributes = True

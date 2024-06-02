@@ -70,7 +70,8 @@ def update_student(student_id:int, student : StudentPydantic,db:Session =Depends
     if db_student is None:
         raise HTTPException(status_code=404,detail="Student not found")
 
-    for attr,value in vars(student).items():
-        setattr(db_student, attr, value)
+    for attr,value in vars(student).items(): #vars() fonksiyonu, student objesinin özelliklerini bir sözlük olarak döndürür
+        setattr(db_student, attr, value) #bu özelliklerin herbirini (attr) alır ve karşılık gelen değeri (value) setattr() fonksiyonu ile ilgili öğrenci kaydına (db_student) atar.
+        #student parametresinde gelen yeni öğrenci bilgilerini, veritabanındaki öğrenci kaydına (db_student) uygular.
     db.commit()
     return db_student
