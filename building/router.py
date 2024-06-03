@@ -34,6 +34,9 @@ class BuildingEnum(str,Enum):
       akademik_bina="akademik bina"
       idari_bina ="idari bina"
       kafeterya ="kafeterya"
+
+
+
 @router.get("/builds/{building_type}",response_model=BuildingPydantic)
 async def get_buildings(building_type:BuildingEnum=BuildingEnum,db:Session =Depends(get_db)):
     db_building=db.query(Building).filter(Building.building_type == building_type).first()

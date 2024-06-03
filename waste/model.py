@@ -72,12 +72,12 @@ class Waste(Base):
     student =relationship('Student',back_populates='waste_1')
 
 class WastePydantic(BaseModel):
-    building_id:int
-    student_id:int
-    waste_name:str
-    quantity:int
-    waste_type: WasteEnum
-    building_type :BuildingEnum
+    building_id : int
+    student_id : int
+    waste_name : str
+    quantity : int
+    waste_type : WasteEnum
+    building_type : BuildingEnum
     class Config:
         from_attributes = True #orm modellemesi için bu class yapısı kullanıldı bize pydantic modellemesinde kolaylık sağladı
 

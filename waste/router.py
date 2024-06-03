@@ -4,6 +4,10 @@ from sqlalchemy.orm import Session,sessionmaker
 from sqlalchemy import create_engine
 from building.model import BuildingEnum
 from pydantic import BaseModel
+from sqlalchemy.exc import SQLAlchemyError
+
+
+from enum import Enum
 
 
 
@@ -44,6 +48,35 @@ async def add_waste(waste: WastePydantic=Body(...), db: Session = Depends(get_db
 async def get_wastes(skip: int=0,limit:int=100,db: Session = Depends(get_db)):
     db_waste = db.query(Waste).offset(skip).limit(limit).all()
     return db_waste
+
+
+@router.get("/get_waste/{building_type}",response_model=WastePydantic)
+async def get_building_type_waste(building_type:BuildingEnum,db: Session = Depends(get_db)):
+    db_waste=db.query(Waste).filter(Waste.building_type == building_type).first()
+    if db_waste is None:
+        raise HTTPException(status_code=404, detail="Bina bulunamadı")
+    return db_waste
+
+
+@router.get("/wastes/", response_model=List[WastePydantic])
+def read_wastes(waste_type: WasteEnum, db: Session = next(get_db())):
+    try:
+        wastes = db.query(Waste).filter(Waste.waste_type == waste_type).all()
+        if not wastes:
+            raise HTTPException(status_code=404, detail="Waste not found")
+        return wastes
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
+
+
+
+
+
 
 
 @router.put("/update_wastes/{waste_id}", response_model=WastePydantic)
@@ -90,5 +123,6 @@ async def delete_waste(waste_id:int,db: Session = Depends(get_db)):
     db.delete(db_waste)
     db.commit()
     return db_waste
+
 
 
